@@ -21,7 +21,6 @@ optdepends=(
   # It works well with Nerd Fonts, Source Code Pro, Font Awesome, Powerline,
   # and even the default system fonts. The full choice of style options is
   # available only when using Nerd Fonts.
-replaces=('zsh-theme-powerlevel9k')
 _commit=35833ea15f14b71dbcebc7e54c104d8d56ca5268  # tags/1.20.0^0
 
 # _libgit2ver depends on pkgver. They must be updated together. See libgit2_version in:

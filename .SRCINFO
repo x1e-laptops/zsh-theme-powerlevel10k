@@ -12,7 +12,6 @@ pkgbase = zsh-theme-powerlevel10k
 	optdepends = ttf-meslo-nerd-font-powerlevel10k: recommended font
 	optdepends = powerline-fonts: patched fonts for powerline
 	optdepends = ttf-font-nerd: full choice of style options
-	replaces = zsh-theme-powerlevel9k
 	source = git+https://github.com/romkatv/powerlevel10k.git#commit=35833ea15f14b71dbcebc7e54c104d8d56ca5268
 	source = libgit2-tag-2ecf33948a4df9ef45a66c68b8ef24a5e60eaac6.tar.gz::https://github.com/romkatv/libgit2/archive/tag-2ecf33948a4df9ef45a66c68b8ef24a5e60eaac6.tar.gz
 	validpgpkeys = 8B060F8B9EB395614A669F2A90ACE942EB90C3DD
