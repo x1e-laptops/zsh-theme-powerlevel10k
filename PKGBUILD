@@ -1,4 +1,4 @@
-# Maintainer: Mark Wagie <mark at manjaro dot org>
+# Maintainer: Mark Wagie <mark dot wagie at proton dot me>
 # Contributor: Christian Rebischke <chris.rebischke@archlinux.org>
 # Contributor: Jeff Henson <jeff@henson.io>
 # Contributor: Ron Asimi <ron dot asimi at gmail dot com>
@@ -7,7 +7,7 @@ pkgname=zsh-theme-powerlevel10k
 # Whenever pkgver is updated, _libgit2ver below must also be updated.
 pkgver=1.20.0
 _libgit2ver="tag-2ecf33948a4df9ef45a66c68b8ef24a5e60eaac6"
-pkgrel=2
+pkgrel=3
 pkgdesc="Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience."
 arch=('x86_64')
 url='https://github.com/romkatv/powerlevel10k'
@@ -26,18 +26,13 @@ _commit=35833ea15f14b71dbcebc7e54c104d8d56ca5268  # tags/1.20.0^0
 # _libgit2ver depends on pkgver. They must be updated together. See libgit2_version in:
 # https://raw.githubusercontent.com/romkatv/powerlevel10k/v${pkgver}/gitstatus/build.info
 source=(
-  "git+https://github.com/romkatv/powerlevel10k.git#commit=$_commit"
+  "git+https://github.com/romkatv/powerlevel10k.git#tag=v${pkgver}?signed"
 #  "powerlevel10k-${pkgver}.tar.gz::https://github.com/romkatv/powerlevel10k/archive/v${pkgver}.tar.gz"
 #  "https://github.com/romkatv/powerlevel10k/releases/download/v$pkgver/powerlevel10k-$pkgver.tar.gz.asc"
   "libgit2-${_libgit2ver}.tar.gz::https://github.com/romkatv/libgit2/archive/${_libgit2ver}.tar.gz")
-sha256sums=('SKIP'
+sha256sums=('01ea7783665a4bb0deefb9a7ac90e4af867e0a70a275aaaf3b062e114264f92d'
             '4ce11d71ee576dbbc410b9fa33a9642809cc1fa687b315f7c23eeb825b251e93')
 validpgpkeys=('8B060F8B9EB395614A669F2A90ACE942EB90C3DD') # Roman Perepelitsa <roman.perepelitsa@gmail.com>
-
-pkgver() {
-  cd powerlevel10k
-  git describe --tags | sed 's/^v//;s/-/+/g'
-}
 
 build() {
   cd "${srcdir}/libgit2-${_libgit2ver}"
