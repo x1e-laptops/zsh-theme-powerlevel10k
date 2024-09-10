@@ -7,7 +7,7 @@ pkgname=zsh-theme-powerlevel10k
 # Whenever pkgver is updated, _libgit2ver below must also be updated.
 pkgver=1.20.0
 _libgit2ver="tag-2ecf33948a4df9ef45a66c68b8ef24a5e60eaac6"
-pkgrel=3
+pkgrel=4
 pkgdesc="Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience."
 arch=('x86_64')
 url='https://github.com/romkatv/powerlevel10k'
@@ -34,8 +34,16 @@ sha256sums=('01ea7783665a4bb0deefb9a7ac90e4af867e0a70a275aaaf3b062e114264f92d'
             '4ce11d71ee576dbbc410b9fa33a9642809cc1fa687b315f7c23eeb825b251e93')
 validpgpkeys=('8B060F8B9EB395614A669F2A90ACE942EB90C3DD') # Roman Perepelitsa <roman.perepelitsa@gmail.com>
 
+prepare() {
+  cd powerlevel10k/gitstatus
+
+  # drop -Werror
+  # https://github.com/romkatv/powerlevel10k/commit/45627c528b4e3d8949a1e5c72ee3fe7cac516d8d
+  sed -i 's/-Wall -Werror/-Wall/g' Makefile
+}
+
 build() {
-  cd "${srcdir}/libgit2-${_libgit2ver}"
+  cd "libgit2-${_libgit2ver}"
   cmake \
    -DCMAKE_BUILD_TYPE=None \
    -DZERO_NSEC=ON \
