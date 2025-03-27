@@ -5,42 +5,42 @@
 # Contributor: Roman Perepelitsa <roman.perepelitsa@gmail.com>
 pkgname=zsh-theme-powerlevel10k
 # Whenever pkgver is updated, _libgit2ver below must also be updated.
-pkgver=1.20.0
+pkgver=1.20.14  ## see P9K_VERSION in internal/p10k.zsh
 _libgit2ver="tag-2ecf33948a4df9ef45a66c68b8ef24a5e60eaac6"
-pkgrel=4
+pkgrel=1
 pkgdesc="Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience."
 arch=('x86_64' 'aarch64')
 url='https://github.com/romkatv/powerlevel10k'
 license=('MIT')
-makedepends=('git' 'cmake')
-depends=('glibc' 'zsh')
+makedepends=(
+  'git'
+  'cmake'
+)
+depends=(
+  'glibc'
+  'zsh'
+)
 optdepends=(
-  'ttf-meslo-nerd-font-powerlevel10k: recommended font'
-  'powerline-fonts: patched fonts for powerline'
-  'ttf-font-nerd: full choice of style options')
   # It works well with Nerd Fonts, Source Code Pro, Font Awesome, Powerline,
   # and even the default system fonts. The full choice of style options is
   # available only when using Nerd Fonts.
-_commit=35833ea15f14b71dbcebc7e54c104d8d56ca5268  # tags/1.20.0^0
+  'ttf-meslo-nerd-font-powerlevel10k: recommended font'
+  'powerline-fonts: patched fonts for powerline'
+  'ttf-font-nerd: full choice of style options'
+)
+replaces=('zsh-theme-powerlevel9k')
+_commit=5e26473457d819fe148f7fff32db1082dae72012
 
 # _libgit2ver depends on pkgver. They must be updated together. See libgit2_version in:
 # https://raw.githubusercontent.com/romkatv/powerlevel10k/v${pkgver}/gitstatus/build.info
 source=(
-  "git+https://github.com/romkatv/powerlevel10k.git#tag=v${pkgver}?signed"
+  "git+https://github.com/romkatv/powerlevel10k.git#commit=${_commit}"
 #  "powerlevel10k-${pkgver}.tar.gz::https://github.com/romkatv/powerlevel10k/archive/v${pkgver}.tar.gz"
 #  "https://github.com/romkatv/powerlevel10k/releases/download/v$pkgver/powerlevel10k-$pkgver.tar.gz.asc"
   "libgit2-${_libgit2ver}.tar.gz::https://github.com/romkatv/libgit2/archive/${_libgit2ver}.tar.gz")
-sha256sums=('01ea7783665a4bb0deefb9a7ac90e4af867e0a70a275aaaf3b062e114264f92d'
+sha256sums=('9ab458f046131e2be451d86caf4ce4788cfde1a7ed5bb6fd035bef928e57880c'
             '4ce11d71ee576dbbc410b9fa33a9642809cc1fa687b315f7c23eeb825b251e93')
-validpgpkeys=('8B060F8B9EB395614A669F2A90ACE942EB90C3DD') # Roman Perepelitsa <roman.perepelitsa@gmail.com>
-
-prepare() {
-  cd powerlevel10k/gitstatus
-
-  # drop -Werror
-  # https://github.com/romkatv/powerlevel10k/commit/45627c528b4e3d8949a1e5c72ee3fe7cac516d8d
-  sed -i 's/-Wall -Werror/-Wall/g' Makefile
-}
+#validpgpkeys=('8B060F8B9EB395614A669F2A90ACE942EB90C3DD') # Roman Perepelitsa <roman.perepelitsa@gmail.com>
 
 build() {
   cd "libgit2-${_libgit2ver}"
