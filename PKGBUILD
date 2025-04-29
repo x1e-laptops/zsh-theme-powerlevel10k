@@ -5,7 +5,7 @@
 # Contributor: Roman Perepelitsa <roman.perepelitsa@gmail.com>
 pkgname=zsh-theme-powerlevel10k
 # Whenever pkgver is updated, _libgit2ver below must also be updated.
-pkgver=1.20.14  ## see P9K_VERSION in internal/p10k.zsh
+pkgver=1.20.15  ## see P9K_VERSION in internal/p10k.zsh
 _libgit2ver="tag-2ecf33948a4df9ef45a66c68b8ef24a5e60eaac6"
 pkgrel=1
 pkgdesc="Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience."
@@ -29,7 +29,7 @@ optdepends=(
   'ttf-font-nerd: full choice of style options'
 )
 replaces=('zsh-theme-powerlevel9k')
-_commit=5e26473457d819fe148f7fff32db1082dae72012
+_commit=36f3045d69d1ba402db09d09eb12b42eebe0fa3b
 
 # _libgit2ver depends on pkgver. They must be updated together. See libgit2_version in:
 # https://raw.githubusercontent.com/romkatv/powerlevel10k/v${pkgver}/gitstatus/build.info
@@ -38,26 +38,26 @@ source=(
 #  "powerlevel10k-${pkgver}.tar.gz::https://github.com/romkatv/powerlevel10k/archive/v${pkgver}.tar.gz"
 #  "https://github.com/romkatv/powerlevel10k/releases/download/v$pkgver/powerlevel10k-$pkgver.tar.gz.asc"
   "libgit2-${_libgit2ver}.tar.gz::https://github.com/romkatv/libgit2/archive/${_libgit2ver}.tar.gz")
-sha256sums=('9ab458f046131e2be451d86caf4ce4788cfde1a7ed5bb6fd035bef928e57880c'
+sha256sums=('e53c80c488f42e708f46512ccbb511e4ce21df01b892b5558345a5ce20c81bb0'
             '4ce11d71ee576dbbc410b9fa33a9642809cc1fa687b315f7c23eeb825b251e93')
 #validpgpkeys=('8B060F8B9EB395614A669F2A90ACE942EB90C3DD') # Roman Perepelitsa <roman.perepelitsa@gmail.com>
 
 build() {
   cd "libgit2-${_libgit2ver}"
   cmake \
-   -DCMAKE_BUILD_TYPE=None \
-   -DZERO_NSEC=ON \
-   -DTHREADSAFE=ON \
-   -DUSE_BUNDLED_ZLIB=ON \
-   -DREGEX_BACKEND=builtin \
-   -DUSE_HTTP_PARSER=builtin \
-   -DUSE_SSH=OFF \
-   -DUSE_HTTPS=OFF \
-   -DBUILD_CLAR=OFF \
-   -DUSE_GSSAPI=OFF \
-   -DUSE_NTLMCLIENT=OFF \
-   -DBUILD_SHARED_LIBS=OFF \
-   -DENABLE_REPRODUCIBLE_BUILDS=ON \
+   -DCMAKE_BUILD_TYPE='None' \
+   -DZERO_NSEC='ON' \
+   -DTHREADSAFE='ON' \
+   -DUSE_BUNDLED_ZLIB='ON' \
+   -DREGEX_BACKEND='builtin' \
+   -DUSE_HTTP_PARSER='builtin' \
+   -DUSE_SSH='OFF' \
+   -DUSE_HTTPS='OFF' \
+   -DBUILD_CLAR='OFF' \
+   -DUSE_GSSAPI='OFF' \
+   -DUSE_NTLMCLIENT='OFF' \
+   -DBUILD_SHARED_LIBS='OFF' \
+   -DENABLE_REPRODUCIBLE_BUILDS='ON' \
    -Wno-dev \
    .
   make
