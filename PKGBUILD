@@ -6,18 +6,16 @@
 pkgname=zsh-theme-powerlevel10k
 # Whenever pkgver is updated, _libgit2ver below must also be updated.
 pkgver=1.20.15  ## see P9K_VERSION in internal/p10k.zsh
-_libgit2ver="tag-2ecf33948a4df9ef45a66c68b8ef24a5e60eaac6"
-pkgrel=1
+pkgrel=2
 pkgdesc="Powerlevel10k is a theme for Zsh. It emphasizes speed, flexibility and out-of-the-box experience."
 arch=('x86_64' 'aarch64')
 url='https://github.com/romkatv/powerlevel10k'
 license=('MIT')
 makedepends=(
   'git'
-  'cmake'
+  'zig'
 )
 depends=(
-  'glibc'
   'zsh'
 )
 optdepends=(
@@ -29,48 +27,35 @@ optdepends=(
   'ttf-font-nerd: full choice of style options'
 )
 replaces=('zsh-theme-powerlevel9k')
-_commit=36f3045d69d1ba402db09d09eb12b42eebe0fa3b
 
 # _libgit2ver depends on pkgver. They must be updated together. See libgit2_version in:
 # https://raw.githubusercontent.com/romkatv/powerlevel10k/v${pkgver}/gitstatus/build.info
 source=(
-  "git+https://github.com/romkatv/powerlevel10k.git#commit=${_commit}"
-#  "powerlevel10k-${pkgver}.tar.gz::https://github.com/romkatv/powerlevel10k/archive/v${pkgver}.tar.gz"
-#  "https://github.com/romkatv/powerlevel10k/releases/download/v$pkgver/powerlevel10k-$pkgver.tar.gz.asc"
-  "libgit2-${_libgit2ver}.tar.gz::https://github.com/romkatv/libgit2/archive/${_libgit2ver}.tar.gz")
-sha256sums=('e53c80c488f42e708f46512ccbb511e4ce21df01b892b5558345a5ce20c81bb0'
-            '4ce11d71ee576dbbc410b9fa33a9642809cc1fa687b315f7c23eeb825b251e93')
+  "https://github.com/romkatv/powerlevel10k/archive/36f3045d69d1ba402db09d09eb12b42eebe0fa3b.tar.gz"
+  "https://github.com/zig-pkgs/gitstatus/releases/download/v1.5.5/gitstatus-cache-v1.5.5.tar.gz"
+  "https://github.com/zig-pkgs/gitstatus/archive/refs/tags/v1.5.5.tar.gz")
+sha256sums=('61a0ffd025d75457fa07f10805b12479522b6ab68c6733c816012377fc23e1ff'
+            '875c4662d0eb289f7439c96c1dd54ce47d297c12d8e5109a407fba32686c6c6e'
+            'b79eb652e85607c86ff4ad626088d74d38f5321930e5dcbe95ef8d0ebe3e8175')
+options=('!strip' '!debug')
 #validpgpkeys=('8B060F8B9EB395614A669F2A90ACE942EB90C3DD') # Roman Perepelitsa <roman.perepelitsa@gmail.com>
 
-build() {
-  cd "libgit2-${_libgit2ver}"
-  cmake \
-   -DCMAKE_BUILD_TYPE='None' \
-   -DZERO_NSEC='ON' \
-   -DTHREADSAFE='ON' \
-   -DUSE_BUNDLED_ZLIB='ON' \
-   -DREGEX_BACKEND='builtin' \
-   -DUSE_HTTP_PARSER='builtin' \
-   -DUSE_SSH='OFF' \
-   -DUSE_HTTPS='OFF' \
-   -DBUILD_CLAR='OFF' \
-   -DUSE_GSSAPI='OFF' \
-   -DUSE_NTLMCLIENT='OFF' \
-   -DBUILD_SHARED_LIBS='OFF' \
-   -DENABLE_REPRODUCIBLE_BUILDS='ON' \
-   -Wno-dev \
-   .
-  make
+export CARCH=aarch64
 
-  # build gitstatus
-  cd "$srcdir/powerlevel10k/gitstatus"
-  export CXXFLAGS+=" -I${srcdir}/libgit2-${_libgit2ver}/include -DGITSTATUS_ZERO_NSEC -D_GNU_SOURCE"
-  export LDFLAGS+=" -L${srcdir}/libgit2-${_libgit2ver}"
-  make
+build() {
+  export ZIG_GLOBAL_CACHE_DIR=$srcdir/gitstatus-cache-v1.5.5
+  cd $srcdir/gitstatus-1.5.5
+  zig build -Dtarget=aarch64-linux -Doptimize=ReleaseFast
 }
 
 package() {
-  cd powerlevel10k
+  export ZIG_GLOBAL_CACHE_DIR=$srcdir/gitstatus-cache-v1.5.5
+  cd $srcdir/gitstatus-1.5.5
+  zig build -Dtarget=aarch64-linux -Doptimize=ReleaseFast \
+    -p $pkgdir/usr/share/zsh-theme-powerlevel10k/gitstatus \
+    --prefix-exe-dir usrbin
+
+  cd $srcdir/powerlevel10k-36f3045d69d1ba402db09d09eb12b42eebe0fa3b
   find . -type f -exec install -D '{}' "$pkgdir/usr/share/${pkgname}/{}" ';'
 
   install -d "${pkgdir}/usr/share/licenses/${pkgname}"
